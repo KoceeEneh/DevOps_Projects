@@ -7,4 +7,4 @@ a LAMP stack is an open source technological stack used for building and hosting
 
 - Linux server in the AWS cloud
 
-![lamp drawio (1)](https://github.com/user-attachments/assets/0d2d4e3d-a3a0-4e2d-9b95-1b1ebe8840b1)
+![lamp](https://github.com/user-attachments/assets/59a71426-84c1-44e9-82c5-4b021cdd1d0c)
