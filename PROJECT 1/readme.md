@@ -47,8 +47,158 @@ Also im using a Mac OS so I just need to ssh into the server after creating. For
 ### 2. Launching an EC2 instance 
 
 - use a suitable name for the instance
+for this instance i used 
 
-`bash
-ds`
+` PROJECT_1`
+
+- Create a key pair but if you already have one just use it.
+
+<img width="944" alt="Screenshot 2025-05-19 at 17 13 20" src="https://github.com/user-attachments/assets/4aca884b-8ce0-4ae5-8c56-b3c0bd8f6456" />
+
+- Make sure ssh is enabled
+
+- Since this is a simple ec2 instance leave everything in their default state.
+
+- Time to ssh into the server (note that the server in this context is the ec2 instance we created)
+
+- In your terminal cd into the location of the PEM file you created
+
+- in your aws console click on connect
+
+- There you will see ssh client click on it to reveal the command you will use to ssh
+
+- Copy and paste into your terminal
+
+- You might receive an “unprotected key file warning”, if you do just change the ownership of the pem file
+
+- Proceed to ssh again
+
+- Congratulations you have just created your first linuxserver in the cloud!
+
+### 3. Installing and setting up apache web server 
+
+We will be using the ubuntu package manager apt to install apache
+
+- First we update
+
+- Run apache2 package installation
+
+- Then verify that the service is running
+
+- Congratulations you have ran your first web server!
+
+### 4. Opening port 80
+
+We need to open port 80 which is used  by web browsers to access web pages on the internet
+
+- We head over to the ec2 instance to add a rule to open inbound connection through port 80
+
+- After that we can check if the port is working by running { curl http://127.0.0.1 :80} in the terminal. if you got a lines of codes that doesnt really make much sense
+
+if you got a lines of codes that doesnt really make much sense. then, congratulations it works.
+
+- lets check if its accessible over the internet by using {http://<Public-IP-Address>:80}
+
+- To retrieve your public ip directly from the terminal use{ curl -s http://169.254.169.254/latest/meta-data/public-ipv4}
+ 
+- If you see the “it works” interface then it actually works
+
+### 5. Installing SQL
+
+- Installing sql {sudo apt install mysql-server}
+  
+When prompted confirm installation by typing Y and ENTER
+
+- After installing log in to your  mysql
+
+- This connects you to the mysql server as the admin user root
+
+- set a password for root
+  
+We will use musql_native_password as default authentication { ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'PASSWORD'; }
+
+replace 'PASSWORD' with your actual password
+
+- Exit after
+
+- Start the script by running { $ sudo mysql_secure_installation}
+
+- Once it runs it requests your root password {PASSWORD}
+
+- Next it asks you to. Validate password plugins, enter Y for yes
+
+- For the rest of the question press Y and hit ENTER key at each prompt
+
+- When you are done, test if you are able to login to the mysql console using {sudo mysql -p}
+
+### 6. Installing PHP
+
+- For this we will be needing php-mysql, a PHP module that allows it to communicate with mysql-based databases. We will also need libapache2-mod-php to enable apache to handle PHP files.
+
+- Installing the 3 packages {sudo apt install php libapache2-mod-php php-mysql}
+
+- Confirm the version {php -v}
+
+- Congratulations you just set up php now the LAMP stack is complete!
+
+### 7. Creating a virtual host for your website using apache 
+
+- Setting up a domain eg; 'project1lamp'
+
+- Create a directory for project1lamp {sudo mkdir var/www/project1lamp}
+
+- Assign ownership of the direciory to the current user{ sudo chown -R $USER:$USER /var/www/projectlamp}
+
+- Create and open a new config file in apache’s site-available directory.
+
+Paste this inside 
+
+```bash 
+
+<VirtualHost *:80>
+    ServerName projectlamp
+    ServerAlias www.projectlamp 
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/projectlamp
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+ </VirtualHost> }
+```
+
+- You can use the ls command to show the new file we just created { sudo ls /etc/apache2/sites-available}
+
+- In the course of this project there is no domain name for project1lamp yet so we can use ‘#’ to comment the server name and server alias. This tells the program to skip those lines
+
+- to enable the new virtual host use
+
+```bash
+
+sudo a2ensite project1lamp
+
+```
+
+- To disable the default website that comes with apache use
+
+```bash
+ sudo a2dissite 000-default
+```
+
+- Next we test to make sure it doesn’t contain errors { sudo apache2ctl configtest}
+
+- If we get a syntax ok, the next step is to reload to apply the changes
+
+- our new website is now active, but the web root /var/www/projectlamp is still empty. Create an index.html file in that location so that we can test that the virtual host works as expected:
+
+```bash
+
+sudo echo 'Hello LAMP from hostname' $(curl -s http://169.254.169.254/latest/meta-data/public-hostname) 'with public IP' $(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) > /var/www/projectlamp/index.html
+```
+
+- Now go to your browser and try to open your website URL using IP address:
+
+` http://<Public-IP-Address>:80`
+
+### 8. Enabling PHP on the website
+
 
 
