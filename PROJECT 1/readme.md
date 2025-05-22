@@ -200,5 +200,63 @@ sudo echo 'Hello LAMP from hostname' $(curl -s http://169.254.169.254/latest/met
 
 ### 8. Enabling PHP on the website
 
+- First we change the order the index.php file is listed within the directory index
+
+```bash
+
+sudo vim /etc/apache2/mods-enabled/dir.conf
+```
+change this:
+
+`DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm`
+
+To this:
+
+`DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm`
+
+- After saving and closing the file, you will need to reload Apache so the changes take effect:
+
+- Next we create a php script to test that php is correctly installed and configured on the server { vim /var/www/projectlamp/index.php} created inside our custom web root folder
+
+- Inside the blank file add the following php code: { <?php phpinfo();}
+
+- This page provides information about your server from the perspective of PHP. It is useful for debugging and to ensure that your settings are being applied correctly.
+<image>
+If you can see this page in your browser, then your PHP installation is working as expected.
+
+- After checking the relevant information about your PHP server through that page, it’s best to remove the file you created as it contains sensitive information about your PHP environment -and your Ubuntu server. You can use rm to do so:
+
+```bash
+
+sudo rm /var/www/projectlamp/index.php
+
+```
+
+- You can always recreate this page if you need to access the information again later.
+
+##  Troubleshooting
+
+- Apache not starting?
+
+- Permissions issues with /var/www/html?
+
+- Security group not allowing HTTP (port 80)?
+
+- MySQL connection denied?
+
+## Security Considerations
+
+- Don't expose SSH to 0.0.0.0/0
+
+- Always use key-based SSH auth
+
+- Secure MySQL with strong root password
+
+- Use least privilege principle with users
+
+
+
+
+
 
 
