@@ -364,7 +364,9 @@ sudo rm /var/www/projectlamp/index.php
 
 - Use least privilege principle with users
 
+## credits
 
+- @KoceeEneh
 
 
 
