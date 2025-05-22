@@ -11,6 +11,9 @@ a LAMP stack is an open source technological stack used for building and hosting
 
 - Apache, MySQL, PHP running inside the instance
 
+![ec2 content](https://github.com/user-attachments/assets/7936cd21-0565-4b33-986a-ba32e86e32f2)
+
+
 ## Technologies
 - AWS EC2
 - ubuntu server
